@@ -1,7 +1,6 @@
 # Simple Shell Project
 
 **A simple Unix command line interpreter**
-![shell](/shell.png)
 
 ****
 ## Table of contents
@@ -46,7 +45,7 @@ It is created using the **C programming Language** and it can do many functional
 	- **_strlen** -> gives the length of a string
 	- **_strdup** -> copies a string in a newly allocated memory
 	- **concat_all** -> concatenates 3 strings in a newly allocated memory
- - **line_exec.c**
+ - **exec.c**
 	- **splitstring** -> splits a string into an array of words
 	- **execute** -> executes a command using execve
 	- **realloc** -> reallocates a memory block
@@ -57,9 +56,9 @@ It is created using the **C programming Language** and it can do many functional
 	- **linkpath** -> creates a singly linked list for PATH directories
 	- **_which** -> finds the pathname of a command
 	- **free_list** -> frees the linked list of PATH value
- - **checkbuild.c**
+ - **build.c**
 	- **checkbuild** -> checks if a command is a build-in command
- - **buildin.c**
+ - **builtin.c**
 	- **exitt** -> handles the exit buildin command
 	- **_atoi** -> converts a string into an integer
 	- **env** -> prints the current environment
