@@ -1,133 +1,91 @@
-# Simple Shell Project
+# 0x16. C - Simple Shell
+## About
+The shell is the Linux command line interpreter. It provides an interface between the user and the kernel and executes programs called commands. For example, if a user enters `ls` then the shell executes the `ls` command.
 
-**A simple Unix command line interpreter**
+This project, `simple_shell`, is a custom implementation of a simple UNIX shell as a requirement to complete the first sprint in the ALX - Holberton school 12-month SE program. Taking a minimalistic approach, the following functions have been implemented: `access, execve, exit, fork, free, fstat, getline, malloc, perror, signal, stat, wait, write.`
 
-****
-## Table of contents
- - **What is the shell?**
- - **About this project**
- - **Essential Functionalities of the Simple Shell**
- - **File description**
- - **List of allowed functions and system calls for this project**
- - **USAGE**
- - **Example of Usage**
- - **Bugs**
- - **TEAM**
- ****
+## Table of Contents
+* [About](#About)
+* [File Descriptions](#File-Descriptions)
+* [Requirements](#Requirements)
+* [More Info and Examples](#More-Info-and-Examples)
+	* [Installation](#Installation)
+	* [Examples](#Examples)
+* [Mandatory Tasks](#Mandatory-Tasks)
+* [Advanced Tasks](#Advanced-Tasks)
+* [Bugs](#Bugs)
+* [Authors](Authors)
+* [License](#License)
 
-## What is the shell?
-The shell is a program that takes commands from the keyboard via the terminal, and gives them to the operating system to perform.\
-**To better understand how the shell actually works, you can read our [Article].**
+## File Descriptions
+* [AUTHORS](AUTHORS) - It lists the contributors of this project
+* [man_1_simple_shell](man_1_simple_shell) - The Manual describing usage of the simple_shell
+* [shell.h](shell.h) - The header file used in this project
 
-## About this project
-This project is a simple version of the linux shell made for [Holberton School] taking part of the "Low-level programming & Algorithm - Linux and Unix system programming" projects.\
-It is created using the **C programming Language** and it can do many functionalities that a real shell does.
+## Requirements
+### General
+ - Allowed editors: vi, vim, emacs
+ - All files were compiled on Ubuntu 20.04 LTS using gcc, using the options `-Wall -Werror -Wextra -pedantic -std=gnu89`
+ - Betty coding style is followed.
+ - The simple shell has no known memory leaks
 
-## Essential Functionalities of the Simple Shell:
-> Displays a prompt "#cisfun$ " and waits for user input.\
-> Runs all commands of type "executable program" (ls and /bin/ls).\
-> Runs the following build_in commands: **exit**, **env**, **setenv** and **unsetenv**.\
-> Handles commands with arguments.\
-> Handles the PATH global variable.\
-> Handles The EOF (End Of File) condition.\
-> Handles the Ctrl + C signal -> It doesn't exit the shell
+## More Info and Examples
+### Installation
+Designed to run on `Ubuntu 20.04 LTS`, the simple_shell can be installed as follows:
+ * Clone the current repository with the command: ```git clone "https://github.com/GeamXD/simple_shell.git"```
+ * `cd` in to the cloned directory: ```cd simple_shell```
+ * Create an executable using: ```gcc -Wall -Werror -Wextra -pedantic *.c -o hsh```
+ * Run the executable either in interative mode `./hsh` or non-interactive mode `echo "pwd" | ./hsh`
 
-## Files description
- - **AUTHORS** -> List of contributors to this repository
- - **man_1_simple_shell** -> Manual page for the simple_shell
- - **shell.h** -> Header file
- - **shell.c** -> main function
-	- **sig_handler** -> handles the Ctrl + C signal
-	- **_EOF** -> handles the End Of File condition
- - **string.c**
-	- **_putchar** -> prints a character
-	- **_puts** -> prints a string
-	- **_strlen** -> gives the length of a string
-	- **_strdup** -> copies a string in a newly allocated memory
-	- **concat_all** -> concatenates 3 strings in a newly allocated memory
- - **exec.c**
-	- **splitstring** -> splits a string into an array of words
-	- **execute** -> executes a command using execve
-	- **realloc** -> reallocates a memory block
-	- **freearv** -> frees a 2 dimensional array
- - **linkpath.c**
-	- **_getenv** -> returns the value of a global variable
-	- **add_node_end** -> adds a node in a singly linked list
-	- **linkpath** -> creates a singly linked list for PATH directories
-	- **_which** -> finds the pathname of a command
-	- **free_list** -> frees the linked list of PATH value
- - **build.c**
-	- **checkbuild** -> checks if a command is a build-in command
- - **builtin.c**
-	- **exitt** -> handles the exit buildin command
-	- **_atoi** -> converts a string into an integer
-	- **env** -> prints the current environment
-	- **_setenv** -> Initialize a new global variable, or modify an existing one
-	- **_unsetenv** -> remove a global variable
-
-****
-## List of allowed functions and system calls for this project
- - access (man 2 access)
- - chdir (man 2 chdir)
- - close (man 2 close)
- - closedir (man 3 closedir)
- - execve (man 2 execve)
- - exit (man 3 exit)
- - _exit (man 2 _exit)
- - fflush (man 3 fflush)
- - fork (man 2 fork)
- - free (man 3 free)
- - getcwd (man 3 getcwd)
- - getline (man 3 getline)
- - isatty (man 3 isatty)
- - kill (man 2 kill)
- - malloc (man 3 malloc)
- - open (man 2 open)
- - opendir (man 3 opendir)
- - perror (man 3 perror)
- - read (man 2 read)
- - readdir (man 3 readdir)
- - signal (man 2 signal)
- - stat (__xstat) (man 2 stat)
- - lstat (__lxstat) (man 2 lstat)
- - fstat (__fxstat) (man 2 fstat)
- - strtok (man 3 strtok)
- - wait (man 2 wait)
- - waitpid (man 2 waitpid)
- - wait3 (man 2 wait3)
- - wait4 (man 2 wait4)
- - write (man 2 write)
-****
-
-## USAGE
-You can try our shell by following these steps:
-> **Step 1:** Clone our repository using this command, (you need to have git installed on your machine first)
-````
-git clone https://github.com/GeamXD/simple_shell
-````
-> **Step 2:** Change directory to simple_shell:
-````
-cd simple_shell
-````
-> **Step 3:** Compile the C files in this way:
-````
-gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
-````
-> **Step 4:** Run the shell
-````
-./hsh
-````
-**Exiting the shell**
-When you want to exit the shell, you can use one of the following methods:
-> **1: Type the command "exit"**
-````
-exit
-````
-> **2: Press on Ctrl + D**
-
+### Examples
+Example of error with sh:
+```
+$ echo "qwerty" | /bin/sh
+/bin/sh: 1: qwerty: not found
+$ echo "qwerty" | /bin/../bin/sh
+/bin/../bin/sh: 1: qwerty: not found
+$
+```
+Same error with our program hsh:
+```
+$ echo "qwerty" | ./hsh
+./hsh: 1: qwerty: not found
+$ echo "qwerty" | ./././hsh
+./././hsh: 1: qwerty: not found
+$
+```
+## Mandatory Tasks
+ - [x] 0. README, man, AUTHORS
+ - [x] 1. Betty would be proud
+ - [x] 2. Simple shell 0.1
+ - [x] 3. Simple shell 0.2
+ - [x] 4. Simple shell 0.3
+ - [x] 5. Simple shell 0.4
+ - [x] 6. Simple shell 1.0
+ - [x] 7. What happens when you type `ls -l \*.c` in the shell
+## Advanced Tasks
+ - [ ] 8. Test suite
+ - [ ] 9. Simple shell 0.1.1
+ - [ ] 10. Simple shell 0.2.1
+ - [ ] 11. Simple shell 0.4.1
+ - [ ] 12. Simple shell 0.4.2
+ - [ ] 13. setenv, unsetenv
+ - [ ] 14. cd
+ - [ ] 15. ;
+ - [ ] 16. && and ||
+ - [ ] 17. alias
+ - [ ] 18. Variables
+ - [ ] 19. Comments
+ - [ ] 20. help
+ - [ ] 21. history
+ - [ ] 22. File as input 
 ## Bugs
-No known Bugs.
+No known bugs exists within the program as of this writing.
 
-## TEAM
-Musa Godwin
-Uchenna Francis
+## Authors
+
+Musa Godwin <musa.godwin8112@gmail.com>
+Uchenna Francis <obiuchenna74@gmail.com>
+
+## License
+Given the open source nature of the project, no special licenses or license whatsoever is needed to use, modify, and redistribute the simple_shell program.

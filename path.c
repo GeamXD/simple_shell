@@ -1,148 +1,86 @@
 #include "shell.h"
 
-
 /**
- * _getenv - gets the value of the global variable
- * @name: name of the global variable
- * Return: string of value
+ * is_cmd - determines if a file is an executable command
+ * @info: the info struct
+ * @path: path to the file
+ *
+ * Return: 1 if true, 0 otherwise
  */
-char *_getenv(const char *name)
+int is_cmd(info_t *info, char *path)
 {
-	int i, j;
-	char *value;
+	struct stat st;
 
-	if (!name)
-		return (NULL);
-	for (i = 0; environ[i]; i++)
+	(void)info;
+	if (!path || stat(path, &st))
+		return (0);
+
+	if (st.st_mode & S_IFREG)
 	{
-		j = 0;
-		if (name[j] == environ[i][j])
-		{
-			while (name[j])
-			{
-				if (name[j] != environ[i][j])
-					break;
-
-				j++;
-			}
-			if (name[j] == '\0')
-			{
-				value = (environ[i] + j + 1);
-				return (value);
-			}
-		}
+		return (1);
 	}
 	return (0);
 }
 
+/**
+ * dup_chars - duplicates characters
+ * @pathstr: the PATH string
+ * @start: starting index
+ * @stop: stopping index
+ *
+ * Return: pointer to new buffer
+ */
+char *dup_chars(char *pathstr, int start, int stop)
+{
+	static char buf[1024];
+	int i = 0, k = 0;
+
+	for (k = 0, i = start; i < stop; i++)
+		if (pathstr[i] != ':')
+			buf[k++] = pathstr[i];
+	buf[k] = 0;
+	return (buf);
+}
 
 /**
- * add_node_end - adds a new node at the end of a list_t list
- * @head: pointer to pointer to our linked list
- * @str: pointer to string in previous first node
- * Return: address of the new element/node
+ * find_path - finds this cmd in the PATH string
+ * @info: the info struct
+ * @pathstr: the PATH string
+ * @cmd: the cmd to find
+ *
+ * Return: full path of cmd if found or NULL
  */
-
-list_path *add_node_end(list_path **head, char *str)
+char *find_path(info_t *info, char *pathstr, char *cmd)
 {
+	int i = 0, curr_pos = 0;
+	char *path;
 
-	list_path *tmp;
-	list_path *new;
-
-	new = malloc(sizeof(list_path));
-
-	if (!new || !str)
-	{
+	if (!pathstr)
 		return (NULL);
-	}
-
-	new->dir = str;
-
-	new->p = '\0';
-	if (!*head)
+	if ((_strlen(cmd) > 2) && starts_with(cmd, "./"))
 	{
-		*head = new;
+		if (is_cmd(info, cmd))
+			return (cmd);
 	}
-	else
+	while (1)
 	{
-		tmp = *head;
-
-		while (tmp->p)
+		if (!pathstr[i] || pathstr[i] == ':')
 		{
-
-			tmp = tmp->p;
+			path = dup_chars(pathstr, curr_pos, i);
+			if (!*path)
+				_strcat(path, cmd);
+			else
+			{
+				_strcat(path, "/");
+				_strcat(path, cmd);
+			}
+			if (is_cmd(info, path))
+				return (path);
+			if (!pathstr[i])
+				break;
+			curr_pos = i;
 		}
-
-		tmp->p = new;
+		i++;
 	}
-
-	return (*head);
-}
-
-
-/**
- * linkpath - creates a linked list for path directories
- * @path: string of path value
- * Return: pointer to the created linked list
- */
-list_path *linkpath(char *path)
-{
-	list_path *head = '\0';
-	char *token;
-	char *cpath = _strdup(path);
-
-	token = strtok(cpath, ":");
-	while (token)
-	{
-		head = add_node_end(&head, token);
-		token = strtok(NULL, ":");
-	}
-
-	return (head);
-}
-
-/**
- * _which - finds the pathname of a filename
- * @filename: name of file or command
- * @head: head of linked list of path directories
- * Return: pathname of filename or NULL if no match
- */
-char *_which(char *filename, list_path *head)
-{
-	struct stat st;
-	char *string;
-
-	list_path *tmp = head;
-
-	while (tmp)
-	{
-
-		string = concat_all(tmp->dir, "/", filename);
-		if (stat(string, &st) == 0)
-		{
-			return (string);
-		}
-		free(string);
-		tmp = tmp->p;
-	}
-
 	return (NULL);
-}
-
-/**
- * free_list - frees a list_t
- *@head: pointer to our linked list
- */
-void free_list(list_path *head)
-{
-	list_path *storage;
-
-	while (head)
-	{
-		storage = head->p;
-		free(head->dir);
-		free(head);
-		head = storage;
-	}
-
 }
